@@ -1,3 +1,5 @@
+# coding utf8
+
 import random
 import pyowm
 import telebot
@@ -26,14 +28,17 @@ while True:
 
 
 
-    @bot.message_handler(commands=['п'])
+    @bot.message_handler(commands=['подскажи'])
 
     def echo_all(message):
         adjectives = {}
+        i=0
         for line in open('adjectives.txt'):
-            
             line = line.split('\n')  # из строки получаем список
-            adjectives[line[0]] = line[1:]  # добавляем в словарь
+            #adjectives[line[0]] = line[1:]  # добавляем в словарь
+            #adjectives[line[0]] = i  # добавляем в словарь
+            adjectives[i] = line[0]
+            i+=1
             # первый элемент списак - как ключ
             # остальные - значение
         adjnum=len(adjectives)
@@ -41,17 +46,21 @@ while True:
 
 
         substantives = {}
+        j=0
         for line in open('substantives.txt'):
             line = line.split('\n')  # из строки получаем список
-            substantives[line[0]] = line[1:]  # добавляем в словарь
+           # substantives[line[0]] = line[1:]  # добавляем в словарь
+            substantives[j] = line[0]
             # первый элемент списак - как ключ
             # остальные - значение
+            j+=1
         subnum=len(substantives)
         subran=int(random.uniform(0,subnum))
 
-        print(adjectives)
+        print(substantives.get(subran))
+        print(str(adjectives.get(adjran)) + " " + str(substantives.get(subran)))
 
-        answer=adjectives
+        answer=str(adjectives.get(adjran)) + " " + str(substantives.get(subran))
         bot.reply_to(message, answer)
 
 
